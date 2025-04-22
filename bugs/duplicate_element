@@ -1,0 +1,16 @@
+Title:
+    Duplicate Elements
+
+Environment: 
+    Streamlit app.py (Task list)
+
+Bug Reproduction: 
+    1. Have multiple tasks saved
+    2. Delete one of the tasks in the middle (not the latest)
+    3. Create and save more tasks
+
+Expected vs Actual Results: 
+    The tasks are each numbered with an id that is suppose to be unique; however, when a task is deleted and another replaces it, the task is given an id based on the number of tasks saved + 1 which causes for duplicate tasks instead of them all being unique
+
+How to Fix it:
+    Whenever tasks are deleted, have all the tasks renumbered so say there is task 1, 2, 3, 4, 5 if task 3 was deleted, the tasks would be renumbered to 1, 2, 3, 4

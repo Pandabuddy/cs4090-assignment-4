@@ -1,0 +1,14 @@
+Title:
+    KeyError
+
+Environment: 
+    Streamlit app.py (Task list)
+
+Bug Reproduction: 
+    1. Delete all tasks
+
+Expected vs Actual Results: 
+    The tasks are suppose to be able to be added and deleted without any errors; however, there were no tasks then the unittests.py was ran to make sure that the functions were working properly, a there was an error that popped up and adding other tasks did nothing either
+
+How to Fix it:
+    Only run the st.write when there a description or due_date is given otherwise, skip the function that calls it when the task does not have it

@@ -123,3 +123,19 @@ def get_overdue_tasks(tasks):
         if not task.get("completed", False) and 
            task.get("due_date", "") < today
     ]
+
+def add_recurring_task(tasks, task):
+    task["id"] = generate_unique_id(tasks)
+    tasks.append(task)
+    save_tasks(tasks)
+
+def share_task(tasks, task_title, email):
+    for task in tasks:
+        if task["title"] == task_title:
+            task.setdefault("shared_with", []).append(email)
+            return True 
+    return False  
+
+def priority_sort(tasks):
+    order = {"High": 3, "Medium": 2, "Low": 1}
+    return sorted(tasks, key=lambda task: order.get(task["priority"], 0), reverse=True)

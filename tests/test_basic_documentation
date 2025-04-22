@@ -1,0 +1,13 @@
+Which units to test: 
+    Looking at app.py, I saw that there were four major functions that the app deals with - loading task, saving task, filter by priority, filter by category - so I decided to make a test for each individual function. Then for the fifth test, I ran the app.py and saw that one can show all the tasks, completed or not, or just show uncompleted tasks so I decided to test the filter task by completion feature.
+
+Functions used:
+    Pytets.fixture was used to have the same sample tasks be able to be used for all the different unittests instead of having to make different samples for each or having to remake the sample for every test.
+    Assert was used to run each test and validate that the function is working correctly.
+
+Individual tests:
+    Load: For load_test I tested that it returns a list instead of being empty
+    Save: I saved my sample tasks and then tested to make sure that the number of tasks that were loaded was the same number of sample tests since this would mean that all the tasks would've been saved
+    Priority: I use the filter to find tasks marked with "low" priority and then asserted to make sure that it only got one (since there was only one task marked low) and made sure that the task name was correct to make sure it got the right task instead of just getting the first task in the list
+    Category: I made two tasks marked as "school" and then filtered using the category function then asserted making sure that two tasks were taken and that the tasks were titled correctly to make sure they got the right tasks.
+    Completed: I had two tasks that were completed, so I tested the filter and made sure that it only took the two completed and that the names of the tasks were correct

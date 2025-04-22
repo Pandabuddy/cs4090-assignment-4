@@ -2,6 +2,12 @@ import streamlit as st
 import pandas as pd
 from datetime import datetime
 from tasks import load_tasks, save_tasks, filter_tasks_by_priority, filter_tasks_by_category
+import subprocess
+
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from tests.test_advanced import test_cov, test_hmtl_report
 
 def main():
     st.title("To-Do Application")
@@ -65,8 +71,12 @@ def main():
                 st.markdown(f"~~**{task['title']}**~~")
             else:
                 st.markdown(f"**{task['title']}**")
-            st.write(task["description"])
-            st.caption(f"Due: {task['due_date']} | Priority: {task['priority']} | Category: {task['category']}")
+            if "description" in task and task["description"]:
+                st.write(task["description"])
+            if "due_date" in task and task["due_date"]:
+                st.caption(f"Due: {task['due_date']} | Priority: {task['priority']} | Category: {task['category']}")
+            else:
+                st.caption(f"Due: None | Priority: {task['priority']} | Category: {task['category']}")
         with col2:
             if st.button("Complete" if not task["completed"] else "Undo", key=f"complete_{task['id']}"):
                 for t in tasks:
@@ -76,8 +86,48 @@ def main():
                         st.rerun()
             if st.button("Delete", key=f"delete_{task['id']}"):
                 tasks = [t for t in tasks if t["id"] != task["id"]]
+                for i, task in enumerate(tasks):
+                    task["id"] = i + 1
                 save_tasks(tasks)
                 st.rerun()
+
+    st.subheader("Run Tests")
+
+    if st.button("Run Unit Tests"):
+        result = subprocess.run(["pytest", "../tests/test_basic.py"], capture_output=True, text=True)
+        st.sidebar.text_area("Test Output", result.stdout)
+        if result.stderr:
+            st.sidebar.text_area("Errors", result.stderr)
+
+    if st.button("Pytest Cov"):
+        stdout, stderr = test_cov()
+        st.sidebar.text_area("Test Output", stdout)
+        if stderr:
+            st.sidebar.text_area("Errors", stderr)
+
+    if st.button("Run Parameterized Test"):
+        result = subprocess.run(["pytest", "-v", "../tests/test_advanced.py::test_parametrize"], capture_output=True, text=True)
+        st.sidebar.text_area("Test Output", result.stdout)
+        if result.stderr:
+            st.sidebar.text_area("Errors", result.stderr)
+
+    if st.button("Run Mock Test"):
+        result = subprocess.run(["pytest", "../tests/test_advanced.py::test_mock"], capture_output=True, text=True)
+        st.sidebar.text_area("Test Output", result.stdout)
+        if result.stderr:
+            st.sidebar.text_area("Errors", result.stderr)
+
+    if st.button("HTML Report"):
+        stdout, stderr = test_hmtl_report()
+        st.sidebar.text_area("Test Output", stdout)
+        if stderr:
+            st.sidebar.text_area("Errors", stderr)
+
+    if st.button("Run BDD Tests"):
+        result = subprocess.run(["pytest", "../tests/feature/steps/test_add_steps.py"], capture_output=True, text=True)
+        st.sidebar.text_area("Test Output", result.stdout)
+        if result.stderr:
+            st.sidebar.text_area("Errors", result.stderr)
 
 if __name__ == "__main__":
     main()
