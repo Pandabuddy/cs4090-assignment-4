@@ -94,7 +94,7 @@ def main():
     st.subheader("Run Tests")
 
     if st.button("Run Unit Tests"):
-        result = subprocess.run(["pytest", "../tests/test_basic.py"], capture_output=True, text=True)
+        result = subprocess.run(["pytest", "tests/test_basic.py"], capture_output=True, text=True)
         st.sidebar.text_area("Test Output", result.stdout)
         if result.stderr:
             st.sidebar.text_area("Errors", result.stderr)
@@ -106,13 +106,13 @@ def main():
             st.sidebar.text_area("Errors", stderr)
 
     if st.button("Run Parameterized Test"):
-        result = subprocess.run(["pytest", "-v", "../tests/test_advanced.py::test_parametrize"], capture_output=True, text=True)
+        result = subprocess.run(["pytest", "-v", "tests/test_advanced.py::test_parametrize"], capture_output=True, text=True)
         st.sidebar.text_area("Test Output", result.stdout)
         if result.stderr:
             st.sidebar.text_area("Errors", result.stderr)
 
     if st.button("Run Mock Test"):
-        result = subprocess.run(["pytest", "../tests/test_advanced.py::test_mock"], capture_output=True, text=True)
+        result = subprocess.run(["pytest", "tests/test_advanced.py::test_mock"], capture_output=True, text=True)
         st.sidebar.text_area("Test Output", result.stdout)
         if result.stderr:
             st.sidebar.text_area("Errors", result.stderr)
@@ -124,7 +124,7 @@ def main():
             st.sidebar.text_area("Errors", stderr)
 
     if st.button("Run BDD Tests"):
-        result = subprocess.run(["pytest", "../tests/feature/steps/test_add_steps.py"], capture_output=True, text=True)
+        result = subprocess.run(["pytest", "tests/feature/steps/test_add_steps.py"], capture_output=True, text=True)
         st.sidebar.text_area("Test Output", result.stdout)
         if result.stderr:
             st.sidebar.text_area("Errors", result.stderr)
